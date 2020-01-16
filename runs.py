@@ -11,7 +11,7 @@ from networks import step_lr
 import tensorflow as tf
 import numpy as np
 import os
-from bird128 import Bird
+from bird import Bird
 import argparse
 from collections import OrderedDict
 np.random.seed(0)

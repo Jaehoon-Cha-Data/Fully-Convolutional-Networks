@@ -173,7 +173,7 @@ class FCN8s(FCN32s):
         self.d16_conv1 = Conv2DTranspose(self.n_classes, 4, 2, padding = 'same',
                                          name = 'd16_conv1')
 
-        self.d8_conv1 = Conv2DTranspose(self.n_classes, 4, 8, padding = 'same',
+        self.d8_conv1 = Conv2DTranspose(self.n_classes, 16, 8, padding = 'same',
                                          name = 'd8_conv1')
     def call(self, X):
         x = self.b1_conv1(X[0])
