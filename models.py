@@ -45,12 +45,10 @@ class FCN32s(Model):
         self.b6_conv1 = Conv2D(4096, 7, 1, padding = 'same',
                                     activation = 'relu',
                                     name='block6_conv1')     
-        self.b6_dropout1 = Dropout(0.5)
         
         self.b7_conv1 = Conv2D(4096, 1, 1, padding = 'same',
                                    activation = 'relu',
                                     name='block7_conv1')
-        self.b7_dropout1 = Dropout(0.5)
 
         self.s32_conv1 = Conv2D(self.n_classes, 1, 1, padding = 'same',
                                 name = 's32_conv1') #200=n_classes
@@ -59,7 +57,8 @@ class FCN32s(Model):
                                          name = 'd32_conv1')
 
     def call(self, X):
-        x = self.b1_conv1(X[0])
+        inputs = X[0]
+        x = self.b1_conv1(inputs)
         x = self.b1_conv2(x)
         b1_out = self.b1_pool1(x)
         
@@ -83,9 +82,7 @@ class FCN32s(Model):
         b5_out = self.b5_pool1(x)
         
         x = self.b6_conv1(b5_out)
-        b6_out = self.b6_dropout1(x)
-        x = self.b7_conv1(b6_out)
-        b7_out = self.b7_dropout1(x)
+        b7_out = self.b7_conv1(x)
         
         score32 = self.s32_conv1(b7_out)
         self.d32conv = self.d32_conv1(score32)
@@ -112,7 +109,8 @@ class FCN16s(FCN32s):
         self.d16_conv1 = Conv2DTranspose(self.n_classes, 16, 16, padding = 'same',
                                          name = 'd16_conv1')
     def call(self, X):
-        x = self.b1_conv1(X[0])
+        inputs = X[0]
+        x = self.b1_conv1(inputs)
         x = self.b1_conv2(x)
         b1_out = self.b1_pool1(x)
         
@@ -136,9 +134,7 @@ class FCN16s(FCN32s):
         b5_out = self.b5_pool1(x)
         
         x = self.b6_conv1(b5_out)
-        b6_out = self.b6_dropout1(x)
-        x = self.b7_conv1(b6_out)
-        b7_out = self.b7_dropout1(x)
+        b7_out = self.b7_conv1(x)
         
         score32 = self.s32_conv1(b7_out)
         
@@ -176,7 +172,8 @@ class FCN8s(FCN32s):
         self.d8_conv1 = Conv2DTranspose(self.n_classes, 16, 8, padding = 'same',
                                          name = 'd8_conv1')
     def call(self, X):
-        x = self.b1_conv1(X[0])
+        inputs = X[0]
+        x = self.b1_conv1(inputs)
         x = self.b1_conv2(x)
         b1_out = self.b1_pool1(x)
         
@@ -200,9 +197,7 @@ class FCN8s(FCN32s):
         b5_out = self.b5_pool1(x)
         
         x = self.b6_conv1(b5_out)
-        b6_out = self.b6_dropout1(x)
-        x = self.b7_conv1(b6_out)
-        b7_out = self.b7_dropout1(x)
+        b7_out = self.b7_conv1(x)
         
         score32 = self.s32_conv1(b7_out)
         
