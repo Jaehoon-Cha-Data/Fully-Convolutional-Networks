@@ -7,4 +7,5 @@ resized image size to (128,128,3) for convenience. Originally, FCNs are applicab
 
 epochs: 50
 
-![all_result](https://user-images.githubusercontent.com/55184529/72602545-5a453880-390f-11ea-942e-b90fbee3bc98.png)
+![all_result](https://user-images.githubusercontent.com/55184529/72602861-df305200-390f-11ea-81f6-83a2af257e47.png)
+
