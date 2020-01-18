@@ -13,6 +13,6 @@ epochs: 50, train with label 0 in train_test_split.txt and images shown below ar
 # ADE
 data from http://sceneparsing.csail.mit.edu/
 
-epochs: 50
+epochs: 50, train with training dataset and images shown below are from validation dataset.
 
 ![all_result](https://user-images.githubusercontent.com/55184529/72664068-9224ac80-39f1-11ea-9fdf-ff094e6ef9c3.png)
