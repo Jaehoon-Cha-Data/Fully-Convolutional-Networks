@@ -17,7 +17,6 @@ class FCN32s(Model):
         self.n_classes = n_classes
         
         self.vgg16  = tf.keras.applications.VGG16(include_top=False,weights='imagenet')
-        self.vgg16.trainable = True
         
         self.layer_names = [
                     'block3_pool', 
