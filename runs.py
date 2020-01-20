@@ -53,13 +53,13 @@ dim = config['dim']
 
 if config['model_name'] == 'FCN32s':
     print('Run FCN32s')
-    model = FCN32s(256, (dim, dim, 3))    
+    model = FCN32s(256).build()    
 elif config['model_name'] == 'FCN16s':
     print('Run FCN16s')
-    model = FCN16s(256, (dim, dim, 3))    
+    model = FCN16s(256).build()
 elif config['model_name'] == 'FCN8s':
     print('Run FCN8s')
-    model = FCN8s(256, (dim, dim, 3))    
+    model = FCN8s(256).build()    
 
 mother_folder = os.path.join('Unet',config['model_name'])
 try:
@@ -74,6 +74,7 @@ except OSError:
     pass    
 
 optimizer = tf.keras.optimizers.Adam(lr=config['lr_set'][0])
+loss_object = tf.nn.sparse_softmax_cross_entropy_with_logits
 
 train_loss = tf.keras.metrics.Mean(name='train_loss')
 
@@ -82,10 +83,11 @@ summary_writer = tf.summary.create_file_writer(folder_name)
 Lr = step_lr(config['ep_set'], config['lr_set'])
 
 @tf.function
-def train_step(X, i):
+def train_step(X, Y, i):
     tf.keras.backend.set_value(optimizer.lr, i)
     with tf.GradientTape() as tape:
-        _, _, loss = model(X)
+        pred, annot = model(X)
+        loss = loss_object(Y, annot)
     gradients = tape.gradient(loss, model.trainable_variables)
     optimizer.apply_gradients(zip(gradients, model.trainable_variables))
 
@@ -98,7 +100,7 @@ def runs(log_freq = 1):
     for epoch in range(config['epochs']):
         for iter_in_epoch in range(iter_per_epoch):
             images, annots, labels = bird.next_train_batch(config['batch_size'])
-            train_step([tf.cast(images, tf.float64), tf.cast(annots, tf.int64)], Lr[epoch])
+            train_step(tf.cast(images, tf.float64), tf.cast(annots, tf.int64), Lr[epoch])
             if tf.equal(optimizer.iterations % log_freq, 0):
                 tf.summary.scalar('loss', train_loss.result(), step=optimizer.iterations)
                 
