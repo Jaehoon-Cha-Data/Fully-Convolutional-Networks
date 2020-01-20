@@ -117,6 +117,3 @@ runs()
 model_folder = os.path.join(folder_name, 'model')
 
 tf.keras.models.save_model(model, model_folder)
-#
-#
-#
